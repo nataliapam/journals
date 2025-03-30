@@ -8,7 +8,7 @@ st.set_page_config(
     page_icon="favicon.ico"
 )
 
-# Hide Streamlit default UI + adjust mobile layout
+# Custom CSS for layout and mobile optimizations
 custom_css = """
     <style>
     #MainMenu, header, footer {
@@ -19,12 +19,10 @@ custom_css = """
         padding-bottom: 0 !important;
     }
 
-    /* Scroll for wide tables on small screens */
     .scroll-container {
         overflow-x: auto;
     }
 
-    /* Adjust spacing for mobile screens */
     @media only screen and (max-width: 768px) {
         .main .block-container {
             padding-top: 0.5rem !important;
@@ -69,20 +67,24 @@ if selected_journals:
     results = df[df["Normalized_Title"].isin(normalized_selection)]
     
     if not results.empty:
-        table = results.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
+        pivot = results.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
 
-        # Reorder columns
-        desired_order = ["Revista", "AJG", "CNRS", "CNU", "VHB", "ABDC"]
-        existing_columns = [col for col in desired_order if col in table.columns]
-        table = table[existing_columns]
+        # Ensure all columns are present
+        full_columns = ["AJG", "CNRS", "CNU", "VHB", "ABDC"]
+        for col in full_columns:
+            if col not in pivot.columns:
+                pivot[col] = ""
 
-        # Add horizontal scroll container
+        # Reorder and drop index
+        pivot = pivot[["AJG", "CNRS", "CNU", "VHB", "ABDC"]]
+
+        # Add scrollable container
         st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
-        st.dataframe(table, use_container_width=True)
+        st.dataframe(pivot, use_container_width=True, hide_index=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # Download button
-        csv = table.to_csv(index=False).encode('utf-8')
+        # Download
+        csv = pivot.to_csv(index=False).encode('utf-8')
         st.download_button("Download results as CSV", csv, "journal_ratings_results.csv", "text/csv")
     else:
         st.warning("No matches found.")
