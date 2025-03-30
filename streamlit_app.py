@@ -2,6 +2,21 @@
 import streamlit as st
 import pandas as pd
 
+st.set_page_config(
+    page_title="Journal Ratings Finder",
+    page_icon="favicon.ico"
+)
+
+# Hide Streamlit header, footer, and menu
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # Load data
 @st.cache_data
 def load_data():
