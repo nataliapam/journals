@@ -2,17 +2,19 @@
 import streamlit as st
 import pandas as pd
 
+# Page config with favicon
 st.set_page_config(
     page_title="Journal Ratings Finder",
     page_icon="favicon.ico"
 )
 
-# Hide Streamlit header, footer, and menu
+# Hide Streamlit default elements (desktop + mobile view)
 hide_streamlit_style = """
     <style>
     #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
     header {visibility: hidden;}
+    footer {visibility: hidden;}
+    .block-container:has(> footer) {padding-bottom: 0 !important;}
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
