@@ -14,15 +14,16 @@ unique_titles = df["Revista"].sort_values().unique()
 
 st.title("Academic Journal Ratings Finder")
 
-st.markdown("""
-Search and compare journal rankings from five major sources:
+with st.expander("Journal ratings from five major sources", expanded=True):
+    st.markdown("""
+    For each origin, the ratings are shown in descending order (best to worst):
 
-- **AJG**: 4 (highest), 3, 2, 1
-- **CNRS**: 1*, 1, 2, 3, 4 (1* is highest)
-- **CNU**: A (highest), B, C
-- **VHB**: A+ (highest), A, B, C, D
-- **ABDC**: A* (highest), A, B, C
-""")
+    - **AJG**: 4, 3, 2, 1  
+    - **CNRS**: 1*, 1, 2, 3, 4  
+    - **CNU**: A, B, C  
+    - **VHB**: A+, A, B, C, D  
+    - **ABDC**: A*, A, B, C
+    """)
 
 # Multiselect input
 selected_journals = st.multiselect(
