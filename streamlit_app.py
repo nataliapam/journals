@@ -8,16 +8,31 @@ st.set_page_config(
     page_icon="favicon.ico"
 )
 
-# Hide Streamlit default elements (desktop + mobile view)
-hide_streamlit_style = """
+# Hide Streamlit default UI + adjust mobile layout
+custom_css = """
     <style>
-    #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
-    .block-container:has(> footer) {padding-bottom: 0 !important;}
+    #MainMenu, header, footer {
+        visibility: hidden;
+    }
+
+    .block-container:has(> footer) {
+        padding-bottom: 0 !important;
+    }
+
+    /* Scroll for wide tables on small screens */
+    .scroll-container {
+        overflow-x: auto;
+    }
+
+    /* Adjust spacing for mobile screens */
+    @media only screen and (max-width: 768px) {
+        .main .block-container {
+            padding-top: 0.5rem !important;
+        }
+    }
     </style>
 """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+st.markdown(custom_css, unsafe_allow_html=True)
 
 # Load data
 @st.cache_data
@@ -61,9 +76,12 @@ if selected_journals:
         existing_columns = [col for col in desired_order if col in table.columns]
         table = table[existing_columns]
 
+        # Add horizontal scroll container
+        st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
         st.dataframe(table, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        # Download
+        # Download button
         csv = table.to_csv(index=False).encode('utf-8')
         st.download_button("Download results as CSV", csv, "journal_ratings_results.csv", "text/csv")
     else:
