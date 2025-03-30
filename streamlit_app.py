@@ -70,13 +70,12 @@ if selected_journals:
         pivot = results.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
 
         # Ensure all columns are present
-        full_columns = ["AJG", "CNRS", "CNU", "VHB", "ABDC"]
+        full_columns = ["Revista", "AJG", "CNRS", "CNU", "VHB", "ABDC"]
         for col in full_columns:
             if col not in pivot.columns:
                 pivot[col] = ""
 
-        # Reorder and drop index
-        pivot = pivot[["AJG", "CNRS", "CNU", "VHB", "ABDC"]]
+        pivot = pivot[full_columns]
 
         # Add scrollable container
         st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
