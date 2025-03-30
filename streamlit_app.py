@@ -2,35 +2,42 @@
 import streamlit as st
 import pandas as pd
 
-# Cargar datos
+# Load data
 @st.cache_data
 def load_data():
     df = pd.read_excel("REVISTAS_LISTADO_DEPURADO_ORDENADO_LIMPIO.xlsx")
-    df["Revista_normalizada"] = df["Revista"].str.lower().str.strip()
+    df["Normalized_Title"] = df["Revista"].str.lower().str.strip()
     return df
 
 df = load_data()
 
-st.title("Buscador de Revistas Académicas")
-st.markdown("Consulta rápida de puntuaciones en AJG, CNRS, CNU, VHB y ABDC")
+st.title("Academic Journal Ratings Finder")
+st.markdown("Search and compare journal rankings across AJG, CNRS, CNU, VHB, and ABDC.")
 
-# Entrada del usuario
-busqueda = st.text_area("Introduce uno o varios nombres de revista (una por línea):").strip()
+# User input
+search_input = st.text_area("Enter one or more journal names (one per line):").strip()
 
-if busqueda:
-    # Convertir a lista y limpiar
-    nombres = [nombre.lower().strip() for nombre in busqueda.split("\n") if nombre.strip()]
+if search_input:
+    # Process input
+    queries = [q.lower().strip() for q in search_input.split("\n") if q.strip()]
     
-    # Buscar coincidencias parciales (contain)
-    resultados = df[df["Revista_normalizada"].apply(lambda x: any(nombre in x for nombre in nombres))]
+    # Find matches
+    results = df[df["Normalized_Title"].apply(lambda x: any(q in x for q in queries))]
     
-    if not resultados.empty:
-        # Pivotar para ver por filas una revista y columnas los rankings por origen
-        tabla = resultados.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
-        st.dataframe(tabla, use_container_width=True)
+    if not results.empty:
+        # Pivot table to show ratings by source
+        table = results.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
 
-        # Descargar
-        csv = tabla.to_csv(index=False).encode('utf-8')
-        st.download_button("Descargar resultados como CSV", csv, "resultados_revistas.csv", "text/csv")
+        # Reorder columns
+        desired_order = ["Revista", "AJG", "CNRS", "CNU", "VHB", "ABDC"]
+        existing_columns = [col for col in desired_order if col in table.columns]
+        table = table[existing_columns]
+
+        # Display
+        st.dataframe(table, use_container_width=True)
+
+        # Download
+        csv = table.to_csv(index=False).encode('utf-8')
+        st.download_button("Download results as CSV", csv, "journal_ratings_results.csv", "text/csv")
     else:
-        st.warning("No se encontraron coincidencias.")
+        st.warning("No matches found.")
