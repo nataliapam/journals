@@ -1,11 +1,10 @@
-
 import streamlit as st
 import pandas as pd
 import os
 
 #st.set_page_config(page_title='Journal Ratings', page_icon='📚', layout='wide')
-st.set_page_config(page_title="Journal Ratings Finder",
-    page_icon="favicon.ico")
+st.set_page_config("Journal Ratings Finder",
+    "favicon.ico")
 
 # Cargar usuarios autorizados desde Secrets
 AUTHORIZED_USERS = [
@@ -30,15 +29,7 @@ if 'authenticated' not in st.session_state:
 if not st.session_state['authenticated']:
     st.title("🔐 Login Required")
     email = st.text_input("Email")
-    #password = st.text_input("Password", type="password")
-    st.markdown(
-    """
-    <input type="text" name="fakeusernameremembered" style="display:none">
-    <input type="password" name="fakepasswordremembered" style="display:none">
-    """,
-    unsafe_allow_html=True
-    )
-    password = st.text_input("Password", type="password", key="user_password")
+    password = st.text_input("Password", type="password", key="user_password", autocomplete="current-password") # Added autocomplete
     login_button = st.button("Login")
 
     if login_button:
@@ -57,7 +48,6 @@ with st.sidebar:
         st.rerun()
 
 # --- APP CONTENT STARTS HERE ---
-
 
 import streamlit as st
 import pandas as pd
