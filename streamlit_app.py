@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import os
 
-
+# Cargar usuarios autorizados desde Secrets
 AUTHORIZED_USERS = [
     os.getenv("USER1"),
     os.getenv("USER2"),
@@ -16,10 +16,11 @@ AUTHORIZED_USERS = [
     os.getenv("USER9"),
     os.getenv("USER10"),
 ]
-AUTHORIZED_USERS = [u for u in AUTHORIZED_USERS if u]  # Remove empty
+AUTHORIZED_USERS = [u for u in AUTHORIZED_USERS if u]
 
 # --- LOGIN ---
-st.session_state['authenticated'] = st.session_state.get('authenticated', False)
+if 'authenticated' not in st.session_state:
+    st.session_state['authenticated'] = False
 
 if not st.session_state['authenticated']:
     st.title("🔐 Login Required")
@@ -31,13 +32,14 @@ if not st.session_state['authenticated']:
         credential = f"{email}:{password}"
         if credential in AUTHORIZED_USERS:
             st.session_state['authenticated'] = True
-            st.stop() #st.experimental_rerun()
+            st.success("Login successful! Redirecting...")
+            st.stop()
         else:
             st.error("Invalid email or password.")
     st.stop()
 
-
 # --- APP CONTENT STARTS HERE ---
+
 
 import streamlit as st
 import pandas as pd
@@ -105,7 +107,7 @@ selected_journals = st.multiselect(
 if selected_journals:
     normalized_selection = [j.lower().strip() for j in selected_journals]
     results = df[df["Normalized_Title"].isin(normalized_selection)]
-
+    
     if not results.empty:
         pivot = results.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
 
