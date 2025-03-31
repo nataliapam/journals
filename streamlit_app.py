@@ -18,6 +18,17 @@ AUTHORIZED_USERS = [
     os.getenv("USER8"),
     os.getenv("USER9"),
     os.getenv("USER10"),
+    os.getenv("USER11"),
+    os.getenv("USER12"),
+    os.getenv("USER13"),
+    os.getenv("USER14"),
+    os.getenv("USER15"),
+    os.getenv("USER16"),
+    os.getenv("USER17"),
+    os.getenv("USER18"),
+    os.getenv("USER19"),
+    os.getenv("USER20"),
+    os.getenv("USER21"),
 ]
 AUTHORIZED_USERS = [u for u in AUTHORIZED_USERS if u]
 
@@ -46,7 +57,8 @@ if not st.session_state['authenticated']:
         submit = st.form_submit_button("Login")
 
     if submit: #login_button:
-        credential = f"{email}:{password}"
+        #credential = f"{email}:{password}"
+        credential = f"{email.lower()}:{password}"
         if credential in AUTHORIZED_USERS:
             st.session_state['authenticated'] = True
             st.rerun()
@@ -56,7 +68,7 @@ if not st.session_state['authenticated']:
 
 # --- LOGOUT BUTTON ---
 with st.sidebar:
-    if st.button("🔓 Logout"):
+    if st.button("Logout"):
         st.session_state['authenticated'] = False
         st.rerun()
 
