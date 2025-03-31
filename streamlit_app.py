@@ -39,7 +39,8 @@ if not st.session_state['authenticated']:
     )
     st.title("🔐 Login Required")
     email = st.text_input("Email")
-    password = st.text_input("Password", type="password", key="user_password", autocomplete="current-password") # Added autocomplete
+    #password = st.text_input("Password", type="password", key="user_password", autocomplete="current-password") # Added autocomplete
+    password = st.text_input("Password", type="password", autocomplete="current-password")
     login_button = st.button("Login")
 
     if login_button:
