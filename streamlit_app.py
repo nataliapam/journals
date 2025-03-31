@@ -38,12 +38,14 @@ if not st.session_state['authenticated']:
         unsafe_allow_html=True
     )
     st.title("🔐 Login Required")
-    email = st.text_input("Email")
-    #password = st.text_input("Password", type="password", key="user_password", autocomplete="current-password") # Added autocomplete
-    password = st.text_input("Password", type="password", autocomplete="current-password")
-    login_button = st.button("Login")
+    with st.form("login_form"):
+        email = st.text_input("Email")
+        #password = st.text_input("Password", type="password", key="user_password", autocomplete="current-password") # Added autocomplete
+        password = st.text_input("Password", type="password", autocomplete="current-password")
+        #login_button = st.button("Login")
+        submit = st.form_submit_button("Login")
 
-    if login_button:
+    if submit: #login_button:
         credential = f"{email}:{password}"
         if credential in AUTHORIZED_USERS:
             st.session_state['authenticated'] = True
