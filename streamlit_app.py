@@ -31,9 +31,9 @@ if not st.session_state['authenticated']:
     if login_button:
         credential = f"{email}:{password}"
         if credential in AUTHORIZED_USERS:
-            with st.spinner("Logging in..."):
-                st.session_state['authenticated'] = True
-                st.experimental_rerun()
+            st.session_state['authenticated'] = True
+            st.success("Logging in...")
+            st.experimental_rerun()
         else:
             st.error("Invalid email or password.")
     st.stop()
