@@ -53,10 +53,10 @@ import streamlit as st
 import pandas as pd
 
 # Page config with favicon
-    page_title="Journal Ratings Finder",
-    page_icon="favicon.ico"
-)
-
+#    page_title="Journal Ratings Finder",
+#    page_icon="favicon.ico"
+#)
+ 
 # Custom CSS for layout and mobile optimizations
 custom_css = """
     <style>
