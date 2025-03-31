@@ -27,6 +27,16 @@ if 'authenticated' not in st.session_state:
 
 # --- LOGIN UI ---
 if not st.session_state['authenticated']:
+    st.markdown(
+        """
+        <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
     st.title("🔐 Login Required")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password", key="user_password", autocomplete="current-password") # Added autocomplete
