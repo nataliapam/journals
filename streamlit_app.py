@@ -37,7 +37,6 @@ if not st.session_state['authenticated']:
         """
         , unsafe_allow_html=True
     )
-)
 
 password = st.text_input("Password", type="password")
     login_button = st.button("Login")
