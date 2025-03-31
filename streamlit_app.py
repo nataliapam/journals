@@ -1,6 +1,48 @@
 
 import streamlit as st
 import pandas as pd
+import os
+from dotenv import load_dotenv
+
+# Load credentials from .env
+load_dotenv()
+AUTHORIZED_USERS = [
+    os.getenv("USER1"),
+    os.getenv("USER2"),
+    os.getenv("USER3"),
+    os.getenv("USER4"),
+    os.getenv("USER5"),
+    os.getenv("USER6"),
+    os.getenv("USER7"),
+    os.getenv("USER8"),
+    os.getenv("USER9"),
+    os.getenv("USER10"),
+]
+AUTHORIZED_USERS = [u for u in AUTHORIZED_USERS if u]  # Remove empty
+
+# --- LOGIN ---
+st.session_state['authenticated'] = st.session_state.get('authenticated', False)
+
+if not st.session_state['authenticated']:
+    st.title("🔐 Login Required")
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    login_button = st.button("Login")
+
+    if login_button:
+        credential = f"{email}:{password}"
+        if credential in AUTHORIZED_USERS:
+            st.session_state['authenticated'] = True
+            st.experimental_rerun()
+        else:
+            st.error("Invalid email or password.")
+    st.stop()
+
+
+# --- APP CONTENT STARTS HERE ---
+
+import streamlit as st
+import pandas as pd
 
 # Page config with favicon
 st.set_page_config(
@@ -35,7 +77,7 @@ st.markdown(custom_css, unsafe_allow_html=True)
 # Load data
 @st.cache_data
 def load_data():
-    df = pd.read_excel("REVISTAS_LISTADO_DEPURADO_ORDENADO_LIMPIO.xlsx")
+    df = pd.read_excel("Journals.xlsx")
     df["Normalized_Title"] = df["Revista"].str.lower().str.strip()
     return df
 
@@ -48,7 +90,7 @@ with st.expander("Journal ratings from five major sources", expanded=True):
     st.markdown("""
     For each origin, the ratings are shown in descending order (best to worst):
 
-    - **AJG**: 4, 3, 2, 1  
+    - **AJG**: 4*, 4, 3, 2, 1  
     - **CNRS**: 1*, 1, 2, 3, 4  
     - **CNU**: A, B, C  
     - **VHB**: A+, A, B, C, D  
@@ -65,7 +107,7 @@ selected_journals = st.multiselect(
 if selected_journals:
     normalized_selection = [j.lower().strip() for j in selected_journals]
     results = df[df["Normalized_Title"].isin(normalized_selection)]
-    
+
     if not results.empty:
         pivot = results.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
 
