@@ -32,8 +32,8 @@ if not st.session_state['authenticated']:
         credential = f"{email}:{password}"
         if credential in AUTHORIZED_USERS:
             st.session_state['authenticated'] = True
-            st.success("Logging in...")
-            st.experimental_rerun()
+            st.success("Login successful! Please wait...")
+            st.stop()
         else:
             st.error("Invalid email or password.")
     st.stop()
