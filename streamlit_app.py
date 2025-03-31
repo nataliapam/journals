@@ -39,15 +39,15 @@ if not st.session_state['authenticated']:
     )
 
 password = st.text_input("Password", type="password")
-    login_button = st.button("Login")
+login_button = st.button("Login")
 
     if login_button:
-        credential = f"{email}:{password}"
-        if credential in AUTHORIZED_USERS:
-            st.session_state['authenticated'] = True
-            st.rerun()
-        else:
-            st.error("Invalid email or password")
+    credential = f"{email}:{password}"
+    if credential in AUTHORIZED_USERS:
+    st.session_state['authenticated'] = True
+    st.rerun()
+    else:
+    st.error("Invalid email or password")
     st.stop()
 
 # --- LOGOUT BUTTON ---
