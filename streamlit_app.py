@@ -2,10 +2,8 @@
 import streamlit as st
 import pandas as pd
 import os
-from dotenv import load_dotenv
 
-# Load credentials from .env
-load_dotenv()
+
 AUTHORIZED_USERS = [
     os.getenv("USER1"),
     os.getenv("USER2"),
