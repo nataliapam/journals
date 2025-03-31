@@ -3,7 +3,9 @@ import streamlit as st
 import pandas as pd
 import os
 
-st.set_page_config(page_title='Journal Ratings', page_icon='📚', layout='wide')
+#st.set_page_config(page_title='Journal Ratings', page_icon='📚', layout='wide')
+st.set_page_config(page_title="Journal Ratings Finder",
+    page_icon="favicon.ico")
 
 # Cargar usuarios autorizados desde Secrets
 AUTHORIZED_USERS = [
