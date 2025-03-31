@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd
 import os
 
+st.set_page_config(page_title='Journal Ratings', page_icon='📚', layout='wide')
+
 # Cargar usuarios autorizados desde Secrets
 AUTHORIZED_USERS = [
     os.getenv("USER1"),
@@ -23,7 +25,7 @@ if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
 
 # --- LOGIN UI ---
-def login_ui():
+if not st.session_state['authenticated']:
     st.title("🔐 Login Required")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
@@ -33,19 +35,16 @@ def login_ui():
         credential = f"{email}:{password}"
         if credential in AUTHORIZED_USERS:
             st.session_state['authenticated'] = True
-            st.success("Login successful!")
+            st.rerun()
         else:
-            st.error("Invalid email or password.")
-
-if not st.session_state['authenticated']:
-    login_ui()
+            st.error("Invalid email or password")
     st.stop()
 
 # --- LOGOUT BUTTON ---
 with st.sidebar:
     if st.button("🔓 Logout"):
         st.session_state['authenticated'] = False
-        st.experimental_rerun()
+        st.rerun()
 
 # --- APP CONTENT STARTS HERE ---
 
@@ -54,7 +53,6 @@ import streamlit as st
 import pandas as pd
 
 # Page config with favicon
-st.set_page_config(
     page_title="Journal Ratings Finder",
     page_icon="favicon.ico"
 )
