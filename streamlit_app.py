@@ -30,13 +30,13 @@ if 'authenticated' not in st.session_state:
 if not st.session_state['authenticated']:
     st.title("🔐 Login Required")
     email = st.text_input("Email")
-    
-st.markdown(
-    """
-    <input type="text" name="fakeusernameremembered" style="display:none">
-    <input type="password" name="fakepasswordremembered" style="display:none">
-    """,
-    unsafe_allow_html=True
+    st.markdown(
+        """
+        <input type="text" name="fakeusernameremembered" style="display:none">
+        <input type="password" name="fakepasswordremembered" style="display:none">
+        """
+        , unsafe_allow_html=True
+    )
 )
 
 password = st.text_input("Password", type="password")
