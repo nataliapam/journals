@@ -18,11 +18,12 @@ AUTHORIZED_USERS = [
 ]
 AUTHORIZED_USERS = [u for u in AUTHORIZED_USERS if u]
 
-# --- LOGIN ---
+# Inicializar el estado de sesión
 if 'authenticated' not in st.session_state:
     st.session_state['authenticated'] = False
 
-if not st.session_state['authenticated']:
+# --- LOGIN UI ---
+def login_ui():
     st.title("🔐 Login Required")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
@@ -32,11 +33,19 @@ if not st.session_state['authenticated']:
         credential = f"{email}:{password}"
         if credential in AUTHORIZED_USERS:
             st.session_state['authenticated'] = True
-            st.success("Login successful! Please wait...")
-            st.stop()
+            st.success("Login successful!")
         else:
             st.error("Invalid email or password.")
+
+if not st.session_state['authenticated']:
+    login_ui()
     st.stop()
+
+# --- LOGOUT BUTTON ---
+with st.sidebar:
+    if st.button("🔓 Logout"):
+        st.session_state['authenticated'] = False
+        st.experimental_rerun()
 
 # --- APP CONTENT STARTS HERE ---
 
