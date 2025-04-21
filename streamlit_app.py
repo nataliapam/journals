@@ -163,7 +163,7 @@ if selected_journals:
         # Renombrar la columna 'Revista' a 'Journal'
         pivot = pivot.rename(columns={"Revista": "Journal"})
 
-        # Construir tabla HTML con dos líneas en los encabezados
+        # Construcción de tabla HTML completa
         def render_html_table(df):
             header = """
             <thead>
@@ -177,10 +177,10 @@ if selected_journals:
                 </tr>
             </thead>
             """
-            
-            body = ""
+
+            rows = []
             for _, row in df.iterrows():
-                body += f"""
+                rows.append(f"""
                 <tr>
                     <td>{row['Journal']}</td>
                     <td>{row['AJG']}</td>
@@ -189,19 +189,18 @@ if selected_journals:
                     <td>{row['VHB']}</td>
                     <td>{row['ABDC']}</td>
                 </tr>
-                """
+                """)
+            body = "<tbody>" + "\n".join(rows) + "</tbody>"
 
             table_html = f"""
             <table style="width: 100%; border-collapse: collapse; text-align: center;" border="1">
                 {header}
-                <tbody>
-                    {body}
-                </tbody>
+                {body}
             </table>
             """
             return table_html
 
-        # Mostrar la tabla
+        # Mostrar la tabla como HTML embebido
         st.markdown(render_html_table(pivot), unsafe_allow_html=True)
 
         # Descarga como CSV (igual que antes)
