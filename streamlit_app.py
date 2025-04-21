@@ -163,41 +163,37 @@ if selected_journals:
         pivot = pivot.rename(columns={"Revista": "Journal"})
 
         def render_html_table(df):
-            header = """
-            <thead>
-                <tr>
-                    <th>Journal</th>
-                    <th>AJG<br><span style='font-size: 0.75em;'>4*, 4, 3, 2, 1</span></th>
-                    <th>CNRS<br><span style='font-size: 0.75em;'>1*, 1, 2, 3, 4</span></th>
-                    <th>CNU<br><span style='font-size: 0.75em;'>A, B, C</span></th>
-                    <th>VHB<br><span style='font-size: 0.75em;'>A+, A, B, C, D</span></th>
-                    <th>ABDC<br><span style='font-size: 0.75em;'>A*, A, B, C</span></th>
-                </tr>
-            </thead>
-            """
+            header = (
+                "<thead><tr>"
+                "<th>Journal</th>"
+                "<th>AJG<br><span style='font-size: 0.75em;'>4*, 4, 3, 2, 1</span></th>"
+                "<th>CNRS<br><span style='font-size: 0.75em;'>1*, 1, 2, 3, 4</span></th>"
+                "<th>CNU<br><span style='font-size: 0.75em;'>A, B, C</span></th>"
+                "<th>VHB<br><span style='font-size: 0.75em;'>A+, A, B, C, D</span></th>"
+                "<th>ABDC<br><span style='font-size: 0.75em;'>A*, A, B, C</span></th>"
+                "</tr></thead>"
+            )
 
-            # Construimos el cuerpo completo como una cadena, no lo mostramos
             body_rows = []
             for _, row in df.iterrows():
-                body_rows.append(f"""
-                <tr>
-                    <td>{row['Journal']}</td>
-                    <td>{row['AJG']}</td>
-                    <td>{row['CNRS']}</td>
-                    <td>{row['CNU']}</td>
-                    <td>{row['VHB']}</td>
-                    <td>{row['ABDC']}</td>
-                </tr>
-                """)
-            
-            body = "<tbody>" + "\n".join(body_rows) + "</tbody>"
+                body_rows.append(
+                    f"<tr>"
+                    f"<td>{row['Journal']}</td>"
+                    f"<td>{row['AJG']}</td>"
+                    f"<td>{row['CNRS']}</td>"
+                    f"<td>{row['CNU']}</td>"
+                    f"<td>{row['VHB']}</td>"
+                    f"<td>{row['ABDC']}</td>"
+                    f"</tr>"
+                )
+            body = "<tbody>" + "".join(body_rows) + "</tbody>"
 
-            table_html = f"""
-            <table style="width: 100%; border-collapse: collapse; text-align: center;" border="1">
-                {header}
-                {body}
-            </table>
-            """
+            table_html = (
+                "<table style='width: 100%; border-collapse: collapse; text-align: center;' border='1'>"
+                f"{header}{body}"
+                "</table>"
+            )
+
             return table_html
 
         # ✅ Esta es la única línea que debe generar salida
