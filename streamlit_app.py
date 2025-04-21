@@ -159,11 +159,9 @@ if selected_journals:
         #st.dataframe(pivot, use_container_width=True, hide_index=True)
         #st.markdown('</div>', unsafe_allow_html=True)
 
-
         # Renombrar la columna 'Revista' a 'Journal'
         pivot = pivot.rename(columns={"Revista": "Journal"})
 
-        # Construcción de tabla HTML completa
         def render_html_table(df):
             header = """
             <thead>
@@ -178,9 +176,10 @@ if selected_journals:
             </thead>
             """
 
-            rows = []
+            # Construimos el cuerpo completo como una cadena, no lo mostramos
+            body_rows = []
             for _, row in df.iterrows():
-                rows.append(f"""
+                body_rows.append(f"""
                 <tr>
                     <td>{row['Journal']}</td>
                     <td>{row['AJG']}</td>
@@ -190,7 +189,8 @@ if selected_journals:
                     <td>{row['ABDC']}</td>
                 </tr>
                 """)
-            body = "<tbody>" + "\n".join(rows) + "</tbody>"
+            
+            body = "<tbody>" + "\n".join(body_rows) + "</tbody>"
 
             table_html = f"""
             <table style="width: 100%; border-collapse: collapse; text-align: center;" border="1">
@@ -200,8 +200,9 @@ if selected_journals:
             """
             return table_html
 
-        # Mostrar la tabla como HTML embebido
+        # ✅ Esta es la única línea que debe generar salida
         st.markdown(render_html_table(pivot), unsafe_allow_html=True)
+
 
         # Descarga como CSV (igual que antes)
         csv = pivot.to_csv(index=False).encode('utf-8')
