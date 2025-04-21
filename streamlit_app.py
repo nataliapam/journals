@@ -197,6 +197,7 @@ if selected_journals:
             return table_html
 
         # ✅ Esta es la única línea que debe generar salida
+        pivot = pivot.fillna("")
         st.markdown(render_html_table(pivot), unsafe_allow_html=True)
 
 
