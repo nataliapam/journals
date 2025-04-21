@@ -109,7 +109,10 @@ st.markdown(custom_css, unsafe_allow_html=True)
 # Load data
 @st.cache_data
 def load_data():
-    df = pd.read_excel("Journals.xlsx")
+    #df = pd.read_excel("Journals.xlsx")
+    path = "Journals.xlsx"
+    #st.write(f"Intentando abrir: {path}") 
+    df = pd.read_excel(path)
     df["Normalized_Title"] = df["Revista"].str.lower().str.strip()
     return df
 
@@ -144,7 +147,7 @@ if selected_journals:
         pivot = results.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
 
         # Ensure all columns are present
-        full_columns = ["Revista", "AJG", "CNRS", "CNU", "VHB", "ABDC"]
+        full_columns = ["Journal", "AJG", "CNRS", "CNU", "VHB", "ABDC"]
         for col in full_columns:
             if col not in pivot.columns:
                 pivot[col] = ""
