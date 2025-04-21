@@ -147,7 +147,7 @@ if selected_journals:
         pivot = results.pivot_table(index="Revista", columns="Origen", values="Rating", aggfunc="first").reset_index()
 
         # Ensure all columns are present
-        full_columns = ["Journal", "AJG", "CNRS", "CNU", "VHB", "ABDC"]
+        full_columns = ["Revista", "AJG", "CNRS", "CNU", "VHB", "ABDC"]
         for col in full_columns:
             if col not in pivot.columns:
                 pivot[col] = ""
