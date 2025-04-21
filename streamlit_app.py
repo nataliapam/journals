@@ -108,42 +108,6 @@ st.markdown(custom_css, unsafe_allow_html=True)
 
 # Load data
 @st.cache_data
-def render_html_table(df):
-    header = """
-    <thead>
-        <tr>
-            <th>Journal</th>
-            <th>AJG<br><span style='font-size: 0.75em;'>4*, 4, 3, 2, 1</span></th>
-            <th>CNRS<br><span style='font-size: 0.75em;'>1*, 1, 2, 3, 4</span></th>
-            <th>CNU<br><span style='font-size: 0.75em;'>A, B, C</span></th>
-            <th>VHB<br><span style='font-size: 0.75em;'>A+, A, B, C, D</span></th>
-            <th>ABDC<br><span style='font-size: 0.75em;'>A*, A, B, C</span></th>
-        </tr>
-    </thead>
-    """
-    
-    body = ""
-    for _, row in df.iterrows():
-        body += f"""
-        <tr>
-            <td>{row['Journal']}</td>
-            <td>{row['AJG']}</td>
-            <td>{row['CNRS']}</td>
-            <td>{row['CNU']}</td>
-            <td>{row['VHB']}</td>
-            <td>{row['ABDC']}</td>
-        </tr>
-        """
-
-    table_html = f"""
-    <table style="width: 100%; border-collapse: collapse; text-align: center;" border="1">
-        {header}
-        <tbody>
-            {body}
-        </tbody>
-    </table>
-    """
-    return table_html
 def load_data():
     #df = pd.read_excel("Journals.xlsx")
     path = "Journals.xlsx"
@@ -199,8 +163,43 @@ if selected_journals:
         # Renombrar la columna 'Revista' a 'Journal'
         pivot = pivot.rename(columns={"Revista": "Journal"})
 
-# Construir tabla HTML con dos líneas en los encabezados
+        # Construir tabla HTML con dos líneas en los encabezados
+        def render_html_table(df):
+            header = """
+            <thead>
+                <tr>
+                    <th>Journal</th>
+                    <th>AJG<br><span style='font-size: 0.75em;'>4*, 4, 3, 2, 1</span></th>
+                    <th>CNRS<br><span style='font-size: 0.75em;'>1*, 1, 2, 3, 4</span></th>
+                    <th>CNU<br><span style='font-size: 0.75em;'>A, B, C</span></th>
+                    <th>VHB<br><span style='font-size: 0.75em;'>A+, A, B, C, D</span></th>
+                    <th>ABDC<br><span style='font-size: 0.75em;'>A*, A, B, C</span></th>
+                </tr>
+            </thead>
+            """
+            
+            body = ""
+            for _, row in df.iterrows():
+                body += f"""
+                <tr>
+                    <td>{row['Journal']}</td>
+                    <td>{row['AJG']}</td>
+                    <td>{row['CNRS']}</td>
+                    <td>{row['CNU']}</td>
+                    <td>{row['VHB']}</td>
+                    <td>{row['ABDC']}</td>
+                </tr>
+                """
 
+            table_html = f"""
+            <table style="width: 100%; border-collapse: collapse; text-align: center;" border="1">
+                {header}
+                <tbody>
+                    {body}
+                </tbody>
+            </table>
+            """
+            return table_html
 
         # Mostrar la tabla
         st.markdown(render_html_table(pivot), unsafe_allow_html=True)
