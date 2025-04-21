@@ -208,8 +208,6 @@ if selected_journals:
         st.download_button("Download results as CSV", csv, "journal_ratings_results.csv", "text/csv")
 
 
-        # Download
-        csv = pivot.to_csv(index=False).encode('utf-8')
-        st.download_button("Download results as CSV", csv, "journal_ratings_results.csv", "text/csv")
+  
     else:
         st.warning("No matches found.")
